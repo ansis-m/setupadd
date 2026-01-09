@@ -1,0 +1,127 @@
+{
+  "name": "@setupad/frontend-adserver",
+  "version": "2.1.0",
+  "dependencies": {
+    "@amcharts/amcharts3-react": "^3.1.1",
+    "@amcharts/amcharts4": "^4.10.36",
+    "@atlaskit/pragmatic-drag-and-drop": "^1.5.2",
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.19.1",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.26.6",
+    "@babel/preset-env": "^7.19.1",
+    "@babel/preset-typescript": "^7.24.7",
+    "@eslint/js": "^9.9.0",
+    "@hotjar/browser": "^1.0.9",
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/icons": "^4.2.1",
+    "@material-ui/lab": "^4.0.0-alpha.46",
+    "@sentry/react": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
+    "@tanstack/react-virtual": "~3.0.4",
+    "@types/draft-convert": "^2.1.8",
+    "@types/eslint__js": "^8.42.3",
+    "@types/jest": "^26.0.14",
+    "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^16.10.1",
+    "@types/react": "^17.0.24",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-draft-wysiwyg": "^1.13.8",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/react-window": "^1.8.8",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "base-64": "^1.0.0",
+    "classnames": "^2.5.1",
+    "dompurify": "^3.2.5",
+    "draft-convert": "^2.1.13",
+    "draft-js": "^0.11.7",
+    "i18next": "^23.4.4",
+    "i18next-browser-languagedetector": "^7.1.0",
+    "immer": "^9.0.21",
+    "immutable": "^5.1.3",
+    "jest": "^26.6.0",
+    "js-cookie": "^2.2.0",
+    "lodash": "^4.17.21",
+    "lscache": "^1.3.2",
+    "materialui-daterange-picker": "^1.1.92",
+    "millify": "^6.1.0",
+    "mobx": "^6.13.6",
+    "mobx-react-lite": "^4.1.0",
+    "moment": "^2.24.0",
+    "nillify": "^0.1.1",
+    "notistack": "^1.0.10",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-draft-wysiwyg": "^1.15.0",
+    "react-draggable": "^4.4.3",
+    "react-error-overlay": "^6.0.9",
+    "react-fade-in": "^2.0.1",
+    "react-i18next": "^13.1.2",
+    "react-intersection-observer": "^9.8.1",
+    "react-scripts": "^5.0.1",
+    "react-select": "^3.2.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "react-window": "^1.8.9",
+    "string-similarity": "^4.0.4",
+    "tiny-invariant": "^1.3.3",
+    "ts-jest": "^26.5.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.0.1",
+    "use-debounce": "^3.4.3",
+    "zustand": "^3.5.8"
+  },
+  "devDependencies": {
+    "@types/base-64": "^1.0.2",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "cross-env": "^10.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^3.3.3s"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "npm run clean && npm run build-lib",
+    "build-lib": "cross-env NODE_ENV=production REACT_APP_VERSION=$npm_package_version babel src/ --out-dir dist --extensions .ts,.js,.tsx,.jsx --copy-files",
+    "check-typing": "tsc",
+    "test": "jest --env=jsdom",
+    "eject": "react-scripts eject",
+    "clean": "rm -rf dist",
+    "prepare": "husky install"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "proxy": "https://localhost:3000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "volta": {
+    "node": "18.20.2",
+    "npm": "8.19.4"
+  }
+}
