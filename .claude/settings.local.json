@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:api.coingecko.com)"
+      "WebFetch(domain:api.coingecko.com)",
+      "Bash(npm run check-typing:*)"
     ]
   }
 }
