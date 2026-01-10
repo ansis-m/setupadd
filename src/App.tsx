@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Tabs, Tab, Container, Box } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Tabs, Tab, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { TabPanel } from './components/TabPanel';
+import { tabsConfig } from './config/tabs.config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,28 +16,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </div>
-  );
-}
-
 function App() {
   const classes = useStyles();
   const [activeTab, setActiveTab] = useState(0);
@@ -43,6 +23,9 @@ function App() {
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
   };
+
+  const currentTab = tabsConfig[activeTab];
+  const CurrentComponent = currentTab.component;
 
   return (
     <div className={classes.root}>
@@ -52,27 +35,23 @@ function App() {
             CoinGecko Explorer
           </Typography>
           <Tabs value={activeTab} onChange={handleTabChange} textColor="inherit">
-            <Tab label="Markets" />
-            <Tab label="Charts" />
-            <Tab label="Trending" />
+            {tabsConfig.map((tab, index) => (
+              <Tab key={index} label={tab.label} />
+            ))}
           </Tabs>
         </Toolbar>
       </AppBar>
 
       <Container maxWidth="xl" className={classes.content}>
-        <TabPanel value={activeTab} index={0}>
-          <Typography variant="h4">Markets</Typography>
-          <Typography>Market data will go here</Typography>
-        </TabPanel>
-
-        <TabPanel value={activeTab} index={1}>
-          <Typography variant="h4">Charts</Typography>
-          <Typography>Price charts will go here</Typography>
-        </TabPanel>
-
-        <TabPanel value={activeTab} index={2}>
-          <Typography variant="h4">Trending</Typography>
-          <Typography>Trending coins will go here</Typography>
+        <TabPanel>
+          {CurrentComponent ? (
+            <CurrentComponent />
+          ) : (
+            <>
+              <Typography variant="h4">{currentTab.title}</Typography>
+              <Typography>{currentTab.subtitle}</Typography>
+            </>
+          )}
         </TabPanel>
       </Container>
     </div>
