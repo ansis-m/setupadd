@@ -91,9 +91,9 @@ export const MarketsView: React.FC = () => {
               <TableCell align="right">${coin.current_price.toLocaleString()}</TableCell>
               <TableCell
                 align="right"
-                className={coin.price_change_percentage_24h >= 0 ? classes.positive : classes.negative}
+                className={coin.price_change_percentage_24h && coin.price_change_percentage_24h >= 0 ? classes.positive : classes.negative}
               >
-                {coin.price_change_percentage_24h.toFixed(2)}%
+                {coin.price_change_percentage_24h ? `${coin.price_change_percentage_24h.toFixed(2)}%` : 'N/A'}
               </TableCell>
               <TableCell align="right">${coin.market_cap.toLocaleString()}</TableCell>
               <TableCell align="right">${coin.total_volume.toLocaleString()}</TableCell>
