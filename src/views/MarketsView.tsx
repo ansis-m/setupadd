@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 export const MarketsView: React.FC = () => {
   const classes = useStyles();
   const [markets, setMarkets] = useState<CoinMarket[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [searchParams] = useState<MarketsSearchParams>({
@@ -51,20 +51,33 @@ export const MarketsView: React.FC = () => {
   });
 
   useEffect(() => {
+    let cancelled = false;
+
     const fetchMarkets = async () => {
       try {
         setLoading(true);
         setError(null);
         const data = await coinGeckoService.getMarkets(searchParams);
-        setMarkets(data);
+
+        if (!cancelled) {
+          setMarkets(data);
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch markets');
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Failed to fetch markets');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchMarkets();
+
+    return () => {
+      cancelled = true;
+    };
   }, [searchParams]);
 
   if (loading) {
