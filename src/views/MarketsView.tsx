@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -12,8 +12,7 @@ import {
   Box,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { CoinMarket, MarketsSearchParams } from '../types/coingecko';
-import { coinGeckoService } from '../services/coingecko.service';
+import { useMarketsStore } from '../stores/markets.store';
 
 const useStyles = makeStyles((theme) => ({
   loading: {
@@ -38,47 +37,16 @@ const useStyles = makeStyles((theme) => ({
 
 export const MarketsView: React.FC = () => {
   const classes = useStyles();
-  const [markets, setMarkets] = useState<CoinMarket[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const [searchParams] = useState<MarketsSearchParams>({
-    vs_currency: 'usd',
-    order: 'market_cap_desc',
-    per_page: 50,
-    page: 1,
-    sparkline: false,
-  });
+  const markets = useMarketsStore((state) => state.markets);
+  const loading = useMarketsStore((state) => state.loading);
+  const error = useMarketsStore((state) => state.error);
+  const fetchMarkets = useMarketsStore((state) => state.fetchMarkets);
 
   useEffect(() => {
-    let cancelled = false;
-
-    const fetchMarkets = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await coinGeckoService.getMarkets(searchParams);
-
-        if (!cancelled) {
-          setMarkets(data);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : 'Failed to fetch markets');
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchMarkets();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [searchParams]);
+    if (markets.length === 0) {
+      void fetchMarkets();
+    }
+  }, [fetchMarkets, markets.length]);
 
   if (loading) {
     return (
