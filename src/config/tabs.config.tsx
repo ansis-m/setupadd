@@ -1,4 +1,5 @@
 import React from 'react';
+import { MarketsView } from '../views/MarketsView';
 
 export interface TabConfig {
   label: string;
@@ -12,6 +13,7 @@ export const tabsConfig: TabConfig[] = [
     label: 'Markets',
     title: 'Markets',
     subtitle: 'Market data will go here',
+    component: MarketsView,
   },
   {
     label: 'Charts',
