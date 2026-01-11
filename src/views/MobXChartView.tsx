@@ -30,16 +30,21 @@ const useStyles = makeStyles((theme) => ({
 
 export const MobXChartView: React.FC = observer(() => {
   const classes = useStyles();
+  const chartDivRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<am4charts.XYChart | null>(null);
 
   const transformedData = chartMobxStore.transformedPriceData;
+  const loading = chartMobxStore.loading;
+  const error = chartMobxStore.error;
 
   useEffect(() => {
     void chartMobxStore.fetchChartData('bitcoin', 7);
   }, []);
 
   useEffect(() => {
-    const chart = am4core.create('mobx-chartdiv', am4charts.XYChart);
+    if (!chartDivRef.current) return;
+
+    const chart = am4core.create(chartDivRef.current, am4charts.XYChart);
     chartRef.current = chart;
 
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -57,35 +62,36 @@ export const MobXChartView: React.FC = observer(() => {
 
     chart.cursor = new am4charts.XYCursor();
 
-    chart.data = transformedData;
-
     return () => {
       chart.dispose();
     };
+  }, []);
+
+  useEffect(() => {
+    if (!chartRef.current || transformedData.length === 0) return;
+    chartRef.current.data = transformedData;
   }, [transformedData]);
-
-  if (chartMobxStore.loading) {
-    return (
-      <Box className={classes.loading}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (chartMobxStore.error) {
-    return (
-      <Box className={classes.loading}>
-        <Typography color="error">{chartMobxStore.error}</Typography>
-      </Box>
-    );
-  }
 
   return (
     <Paper className={classes.paper}>
       <Typography variant="h5" className={classes.title}>
         Bitcoin Price (Last 7 Days) - MobX Version
       </Typography>
-      <div id="mobx-chartdiv" className={classes.chartContainer}></div>
+      {loading && (
+        <Box className={classes.loading}>
+          <CircularProgress />
+        </Box>
+      )}
+      {error && (
+        <Box className={classes.loading}>
+          <Typography color="error">{error}</Typography>
+        </Box>
+      )}
+      <div
+        ref={chartDivRef}
+        className={classes.chartContainer}
+        style={{ display: loading || error ? 'none' : 'block' }}
+      ></div>
     </Paper>
   );
 });

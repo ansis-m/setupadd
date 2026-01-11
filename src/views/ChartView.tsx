@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const ChartView: React.FC = () => {
   const classes = useStyles();
+  const chartDivRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<am4charts.XYChart | null>(null);
   const transformedData = useChartStore((state) => state.transformedPriceData);
   const loading = useChartStore((state) => state.loading);
@@ -37,11 +38,12 @@ export const ChartView: React.FC = () => {
 
   useEffect(() => {
     void fetchChartData('bitcoin', 7);
-    console.log("fetch called");
   }, [fetchChartData]);
 
   useEffect(() => {
-    const chart = am4core.create('chartdiv', am4charts.XYChart);
+    if (!chartDivRef.current) return;
+
+    const chart = am4core.create(chartDivRef.current, am4charts.XYChart);
     chartRef.current = chart;
 
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -56,36 +58,39 @@ export const ChartView: React.FC = () => {
     series.strokeWidth = 2;
     series.name = 'Bitcoin Price';
     series.tooltipText = '{dateX}: [bold]${valueY}[/]';
-    chartRef.current.data = transformedData;
+
     chart.cursor = new am4charts.XYCursor();
-    console.log("init done");
+
     return () => {
       chart.dispose();
     };
+  }, []);
+
+  useEffect(() => {
+    if (!chartRef.current || transformedData.length === 0) return;
+    chartRef.current.data = transformedData;
   }, [transformedData]);
-
-  if (loading) {
-    return (
-      <Box className={classes.loading}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box className={classes.loading}>
-        <Typography color="error">{error}</Typography>
-      </Box>
-    );
-  }
 
   return (
     <Paper className={classes.paper}>
       <Typography variant="h5" className={classes.title}>
         Bitcoin Price (Last 7 Days)
       </Typography>
-      <div id="chartdiv" className={classes.chartContainer}></div>
+      {loading && (
+        <Box className={classes.loading}>
+          <CircularProgress />
+        </Box>
+      )}
+      {error && (
+        <Box className={classes.loading}>
+          <Typography color="error">{error}</Typography>
+        </Box>
+      )}
+      <div
+        ref={chartDivRef}
+        className={classes.chartContainer}
+        style={{ display: loading || error ? 'none' : 'block' }}
+      ></div>
     </Paper>
   );
 };
