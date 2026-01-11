@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Box, CircularProgress, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import { useChartStore } from '../stores/chart.store';
+import { chartMobxStore } from '../stores/chartMobx.store';
 
 am4core.useTheme(am4themes_animated);
 
@@ -27,33 +28,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ChartView: React.FC = () => {
+export const MobXChartView: React.FC = observer(() => {
   const classes = useStyles();
   const chartRef = useRef<am4charts.XYChart | null>(null);
-  const transformedData = useChartStore((state) => state.transformedPriceData);
-  const loading = useChartStore((state) => state.loading);
-  const error = useChartStore((state) => state.error);
-  const fetchChartData = useChartStore((state) => state.fetchChartData);
 
-  // Fetch data on mount
-  useEffect(() => {
-    void fetchChartData('bitcoin', 7);
-  }, [fetchChartData]);
+  // Read observable in render so observer() tracks it
+  const transformedData = chartMobxStore.transformedPriceData;
 
-  // Create chart structure once on mount
   useEffect(() => {
-    const chart = am4core.create('chartdiv', am4charts.XYChart);
+    void chartMobxStore.fetchChartData('bitcoin', 7);
+  }, []);
+
+  useEffect(() => {
+    const chart = am4core.create('mobx-chartdiv', am4charts.XYChart);
     chartRef.current = chart;
 
-    // Create X-axis (date)
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.title.text = 'Date';
 
-    // Create Y-axis (price)
     const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = 'Price (USD)';
 
-    // Create series
     const series = chart.series.push(new am4charts.LineSeries());
     series.dataFields.valueY = 'value';
     series.dataFields.dateX = 'date';
@@ -61,26 +56,23 @@ export const ChartView: React.FC = () => {
     series.name = 'Bitcoin Price';
     series.tooltipText = '{dateX}: [bold]${valueY}[/]';
 
-    // Add cursor
     chart.cursor = new am4charts.XYCursor();
 
-    // Set initial data if already available (e.g., from localStorage)
+    // Set initial data if already available
     chart.data = transformedData;
 
-    // Cleanup on unmount only
     return () => {
       chart.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty deps - create once, but access transformedData for initial load
 
-  // Update chart data when transformedData changes
   useEffect(() => {
     if (!chartRef.current) return;
     chartRef.current.data = transformedData;
   }, [transformedData]);
 
-  if (loading) {
+  if (chartMobxStore.loading) {
     return (
       <Box className={classes.loading}>
         <CircularProgress />
@@ -88,10 +80,10 @@ export const ChartView: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (chartMobxStore.error) {
     return (
       <Box className={classes.loading}>
-        <Typography color="error">{error}</Typography>
+        <Typography color="error">{chartMobxStore.error}</Typography>
       </Box>
     );
   }
@@ -99,9 +91,9 @@ export const ChartView: React.FC = () => {
   return (
     <Paper className={classes.paper}>
       <Typography variant="h5" className={classes.title}>
-        Bitcoin Price (Last 7 Days)
+        Bitcoin Price (Last 7 Days) - MobX Version
       </Typography>
-      <div id="chartdiv" className={classes.chartContainer}></div>
+      <div id="mobx-chartdiv" className={classes.chartContainer}></div>
     </Paper>
   );
-};
+});
