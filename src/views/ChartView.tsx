@@ -35,22 +35,15 @@ export const ChartView: React.FC = () => {
   const error = useChartStore((state) => state.error);
   const fetchChartData = useChartStore((state) => state.fetchChartData);
 
+  // Fetch data on mount
   useEffect(() => {
     void fetchChartData('bitcoin', 7);
   }, [fetchChartData]);
 
+  // Create chart structure once on mount
   useEffect(() => {
-    if (!chartData || !chartData.prices) return;
-
-    // Create chart instance
     const chart = am4core.create('chartdiv', am4charts.XYChart);
     chartRef.current = chart;
-
-    // Transform data: [[timestamp, price]] -> [{date: Date, value: number}]
-    chart.data = chartData.prices.map(([timestamp, price]) => ({
-      date: new Date(timestamp),
-      value: price,
-    }));
 
     // Create X-axis (date)
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -71,12 +64,21 @@ export const ChartView: React.FC = () => {
     // Add cursor
     chart.cursor = new am4charts.XYCursor();
 
-    // Cleanup on unmount
+    // Cleanup on unmount only
     return () => {
-      if (chartRef.current) {
-        chartRef.current.dispose();
-      }
+      chart.dispose();
     };
+  }, []); // Empty deps - create once
+
+  // Update chart data when chartData changes
+  useEffect(() => {
+    if (!chartRef.current || !chartData || !chartData.prices) return;
+
+    // Just update data, don't recreate chart
+    chartRef.current.data = chartData.prices.map(([timestamp, price]) => ({
+      date: new Date(timestamp),
+      value: price,
+    }));
   }, [chartData]);
 
   if (loading) {
