@@ -22,6 +22,10 @@ class ChartMobxStore {
   }
 
   async fetchChartData(coinId: string, days: number) {
+    if (this.transformedPriceData?.length) {
+      return;
+    }
+
     this.loading = true;
     this.error = null;
 

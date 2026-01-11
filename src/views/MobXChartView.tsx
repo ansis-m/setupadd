@@ -32,7 +32,6 @@ export const MobXChartView: React.FC = observer(() => {
   const classes = useStyles();
   const chartRef = useRef<am4charts.XYChart | null>(null);
 
-  // Read observable in render so observer() tracks it
   const transformedData = chartMobxStore.transformedPriceData;
 
   useEffect(() => {
@@ -58,18 +57,11 @@ export const MobXChartView: React.FC = observer(() => {
 
     chart.cursor = new am4charts.XYCursor();
 
-    // Set initial data if already available
     chart.data = transformedData;
 
     return () => {
       chart.dispose();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps - create once, but access transformedData for initial load
-
-  useEffect(() => {
-    if (!chartRef.current) return;
-    chartRef.current.data = transformedData;
   }, [transformedData]);
 
   if (chartMobxStore.loading) {

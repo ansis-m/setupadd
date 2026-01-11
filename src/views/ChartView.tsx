@@ -62,15 +62,6 @@ export const ChartView: React.FC = () => {
     return () => {
       chart.dispose();
     };
-  }, []);
-
-  useEffect(() => {
-    if (!chartRef.current || transformedData.length === 0) {
-      return;
-    }
-    chartRef.current.data = transformedData;
-    chartRef.current.invalidateRawData();
-    console.log("invalidated and set");
   }, [transformedData]);
 
   if (loading) {
