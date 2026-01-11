@@ -1,5 +1,6 @@
 import React from 'react';
 import { MarketsView } from '../views/MarketsView';
+import { ChartView } from '../views/ChartView';
 
 export interface TabConfig {
   label: string;
@@ -19,6 +20,7 @@ export const tabsConfig: TabConfig[] = [
     label: 'Charts',
     title: 'Charts',
     subtitle: 'Price charts will go here',
+    component: ChartView,
   },
   {
     label: 'Trending',
