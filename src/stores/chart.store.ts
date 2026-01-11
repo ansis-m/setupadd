@@ -35,7 +35,6 @@ export const useChartStore = create<ChartState>((set, get) => ({
         days,
       });
 
-      // Transform data in store, not component
       const transformed = data.prices.map(([timestamp, price]) => ({
         date: new Date(timestamp),
         value: price,

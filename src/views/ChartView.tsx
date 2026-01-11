@@ -35,49 +35,42 @@ export const ChartView: React.FC = () => {
   const error = useChartStore((state) => state.error);
   const fetchChartData = useChartStore((state) => state.fetchChartData);
 
-  // Fetch data on mount
   useEffect(() => {
     void fetchChartData('bitcoin', 7);
+    console.log("fetch called");
   }, [fetchChartData]);
 
-  // Create chart structure once on mount
   useEffect(() => {
     const chart = am4core.create('chartdiv', am4charts.XYChart);
     chartRef.current = chart;
 
-    // Create X-axis (date)
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.title.text = 'Date';
 
-    // Create Y-axis (price)
     const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = 'Price (USD)';
 
-    // Create series
     const series = chart.series.push(new am4charts.LineSeries());
     series.dataFields.valueY = 'value';
     series.dataFields.dateX = 'date';
     series.strokeWidth = 2;
     series.name = 'Bitcoin Price';
     series.tooltipText = '{dateX}: [bold]${valueY}[/]';
-
-    // Add cursor
+    chartRef.current.data = transformedData;
     chart.cursor = new am4charts.XYCursor();
-
-    // Set initial data if already available (e.g., from localStorage)
-    chart.data = transformedData;
-
-    // Cleanup on unmount only
+    console.log("init done");
     return () => {
       chart.dispose();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps - create once, but access transformedData for initial load
+  }, []);
 
-  // Update chart data when transformedData changes
   useEffect(() => {
-    if (!chartRef.current) return;
+    if (!chartRef.current || transformedData.length === 0) {
+      return;
+    }
     chartRef.current.data = transformedData;
+    chartRef.current.invalidateRawData();
+    console.log("invalidated and set");
   }, [transformedData]);
 
   if (loading) {
