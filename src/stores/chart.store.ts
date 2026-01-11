@@ -9,12 +9,17 @@ interface ChartState {
   fetchChartData: (coinId: string, days: number) => Promise<void>;
 }
 
-export const useChartStore = create<ChartState>((set) => ({
+export const useChartStore = create<ChartState>((set, get) => ({
   chartData: null,
   loading: false,
   error: null,
 
   fetchChartData: async (coinId: string, days: number) => {
+    const {chartData} = get();
+
+    if(!!chartData) {
+      return;
+    }
     set({ loading: true, error: null });
 
     try {
