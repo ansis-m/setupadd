@@ -29,6 +29,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 7. **User merges** - only the user merges PRs into master after approval
 
+8. **Update local master** - after the PR is merged, update local master and clean up:
+   ```bash
+   git checkout master
+   git pull origin master
+   git branch -d feature/descriptive-name
+   ```
+
 **Branch naming convention**: `feature/short-description` or `fix/short-description`
 
 **Repository**: https://github.com/ansis-m/setupadd
