@@ -2,6 +2,46 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ CRITICAL: Git Workflow Rules
+
+**NEVER commit directly to the `master` branch.** All work must follow this workflow:
+
+1. **Create a feature branch** for each task:
+   ```bash
+   git checkout -b feature/descriptive-name
+   ```
+
+2. **Make commits** in the feature branch only
+
+3. **Push the branch to GitHub**:
+   ```bash
+   git push -u origin feature/descriptive-name
+   ```
+
+4. **Create a Pull Request** using GitHub CLI:
+   ```bash
+   gh pr create --title "Title" --body "Description"
+   ```
+
+5. **Wait for review** - the user will review the PR on GitHub, leave comments, and request changes
+
+6. **Address feedback** - make additional commits to the same branch as needed
+
+7. **User merges** - only the user merges PRs into master after approval
+
+8. **Update local master** - after the PR is merged, update local master and clean up:
+   ```bash
+   git checkout master
+   git pull origin master
+   git branch -d feature/descriptive-name
+   ```
+
+**Branch naming convention**: `feature/short-description` or `fix/short-description`
+
+**Repository**: https://github.com/ansis-m/setupadd
+
+---
+
 ## ⚠️ IMPORTANT: This is a Learning Project
 
 This is NOT a production application. The primary goal is to learn specific libraries that will be used in an upcoming job:
