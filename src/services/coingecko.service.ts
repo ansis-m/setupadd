@@ -27,7 +27,10 @@ class CoinGeckoService {
     return response.json();
   }
 
-  async getMarketChart(coinId: string, params: MarketChartParams): Promise<MarketChartData> {
+  async getMarketChart(
+    coinId: string,
+    params: MarketChartParams,
+  ): Promise<MarketChartData> {
     const queryParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
@@ -36,7 +39,9 @@ class CoinGeckoService {
       }
     });
 
-    const response = await fetch(`${BASE_URL}/coins/${coinId}/market_chart?${queryParams}`);
+    const response = await fetch(
+      `${BASE_URL}/coins/${coinId}/market_chart?${queryParams}`,
+    );
 
     if (!response.ok) {
       throw new Error(`CoinGecko API error: ${response.statusText}`);

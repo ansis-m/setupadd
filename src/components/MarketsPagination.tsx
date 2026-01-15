@@ -1,5 +1,13 @@
 import React from 'react';
-import { Box, Button, Select, MenuItem, FormControl, InputLabel, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Typography,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMarketsStore } from '../stores/markets.store';
 
@@ -33,7 +41,9 @@ export const MarketsPagination: React.FC = () => {
     fetchMarkets();
   };
 
-  const handlePerPageChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handlePerPageChange = (
+    event: React.ChangeEvent<{ value: unknown }>,
+  ) => {
     updateSearchParam('per_page', event.target.value as number);
     updateSearchParam('page', 1);
     fetchMarkets();

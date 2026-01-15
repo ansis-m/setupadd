@@ -49,7 +49,8 @@ export const useMarketsStore = create<MarketsState>(
           set({ markets: data, loading: false });
         } catch (err) {
           set({
-            error: err instanceof Error ? err.message : 'Failed to fetch markets',
+            error:
+              err instanceof Error ? err.message : 'Failed to fetch markets',
             loading: false,
           });
         }
@@ -67,6 +68,6 @@ export const useMarketsStore = create<MarketsState>(
     {
       name: 'markets-storage',
       getStorage: () => localStorage,
-    }
-  )
+    },
+  ),
 );

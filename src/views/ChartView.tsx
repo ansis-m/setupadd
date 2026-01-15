@@ -1,22 +1,22 @@
-import React, { useEffect, useRef } from "react";
-import { Box, CircularProgress, Typography, Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { useChartStore } from "../stores/chart.store";
+import React, { useEffect, useRef } from 'react';
+import { Box, CircularProgress, Typography, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import * as am4core from '@amcharts/amcharts4/core';
+import * as am4charts from '@amcharts/amcharts4/charts';
+import am4themes_animated from '@amcharts/amcharts4/themes/animated';
+import { useChartStore } from '../stores/chart.store';
 
 am4core.useTheme(am4themes_animated);
 
 const useStyles = makeStyles((theme) => ({
   loading: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     minHeight: 400,
   },
   chartContainer: {
-    width: "100%",
+    width: '100%',
     height: 500,
   },
   paper: {
@@ -37,7 +37,7 @@ export const ChartView: React.FC = () => {
   const fetchChartData = useChartStore((state) => state.fetchChartData);
 
   useEffect(() => {
-    void fetchChartData("bitcoin", 7);
+    void fetchChartData('bitcoin', 7);
   }, [fetchChartData]);
 
   useEffect(() => {
@@ -47,17 +47,17 @@ export const ChartView: React.FC = () => {
     chartRef.current = chart;
 
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.title.text = "Date";
+    dateAxis.title.text = 'Date';
 
     const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.title.text = "Price (USD)";
+    valueAxis.title.text = 'Price (USD)';
 
     const series = chart.series.push(new am4charts.LineSeries());
-    series.dataFields.valueY = "value";
-    series.dataFields.dateX = "date";
+    series.dataFields.valueY = 'value';
+    series.dataFields.dateX = 'date';
     series.strokeWidth = 2;
-    series.name = "Bitcoin Price";
-    series.tooltipText = "{dateX}: [bold]${valueY}[/]";
+    series.name = 'Bitcoin Price';
+    series.tooltipText = '{dateX}: [bold]${valueY}[/]';
 
     chart.cursor = new am4charts.XYCursor();
 
@@ -89,7 +89,7 @@ export const ChartView: React.FC = () => {
       <div
         ref={chartDivRef}
         className={classes.chartContainer}
-        style={{ display: loading || error ? "none" : "block" }}
+        style={{ display: loading || error ? 'none' : 'block' }}
       ></div>
     </Paper>
   );
