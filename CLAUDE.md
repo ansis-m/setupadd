@@ -31,12 +31,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 8. **Update local master** - after the PR is merged, update local master and clean up:
    ```bash
+   git stash                              # Save any uncommitted changes
    git checkout master
    git pull origin master
    git branch -d feature/descriptive-name
+   git stash pop                          # Restore uncommitted changes
    ```
+   **Note**: Always stash before switching branches if there are uncommitted changes.
 
 **Branch naming convention**: `feature/short-description` or `fix/short-description`
+
+**NEVER merge PRs** - only merge when explicitly told to by the user.
 
 **Repository**: https://github.com/ansis-m/setupadd
 
