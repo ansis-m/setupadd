@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Tabs, Tab, Container } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Tabs,
+  Tab,
+  Container,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { TabPanel } from './components/TabPanel';
 import { tabsConfig } from './config/tabs.config';
@@ -34,7 +41,11 @@ function App() {
           <Typography variant="h6" className={classes.title}>
             CoinGecko Explorer
           </Typography>
-          <Tabs value={activeTab} onChange={handleTabChange} textColor="inherit">
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            textColor="inherit"
+          >
             {tabsConfig.map((tab, index) => (
               <Tab key={index} label={tab.label} />
             ))}

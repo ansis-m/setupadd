@@ -84,21 +84,38 @@ export const MarketsView: React.FC = () => {
               <TableRow key={coin.id}>
                 <TableCell>{coin.market_cap_rank}</TableCell>
                 <TableCell>
-                  <img src={coin.image} alt={coin.name} className={classes.coinImage} />
+                  <img
+                    src={coin.image}
+                    alt={coin.name}
+                    className={classes.coinImage}
+                  />
                   {coin.name}{' '}
                   <Typography variant="caption" color="textSecondary">
                     ({coin.symbol.toUpperCase()})
                   </Typography>
                 </TableCell>
-                <TableCell align="right">${coin.current_price.toLocaleString()}</TableCell>
+                <TableCell align="right">
+                  ${coin.current_price.toLocaleString()}
+                </TableCell>
                 <TableCell
                   align="right"
-                  className={coin.price_change_percentage_24h && coin.price_change_percentage_24h >= 0 ? classes.positive : classes.negative}
+                  className={
+                    coin.price_change_percentage_24h &&
+                    coin.price_change_percentage_24h >= 0
+                      ? classes.positive
+                      : classes.negative
+                  }
                 >
-                  {coin.price_change_percentage_24h ? `${coin.price_change_percentage_24h.toFixed(2)}%` : 'N/A'}
+                  {coin.price_change_percentage_24h
+                    ? `${coin.price_change_percentage_24h.toFixed(2)}%`
+                    : 'N/A'}
                 </TableCell>
-                <TableCell align="right">${coin.market_cap.toLocaleString()}</TableCell>
-                <TableCell align="right">${coin.total_volume.toLocaleString()}</TableCell>
+                <TableCell align="right">
+                  ${coin.market_cap.toLocaleString()}
+                </TableCell>
+                <TableCell align="right">
+                  ${coin.total_volume.toLocaleString()}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -98,7 +98,13 @@ export interface TrendingResponse {
 // Search Parameters
 export interface MarketsSearchParams {
   vs_currency: string;
-  order: 'market_cap_desc' | 'market_cap_asc' | 'volume_desc' | 'volume_asc' | 'id_desc' | 'id_asc';
+  order:
+    | 'market_cap_desc'
+    | 'market_cap_asc'
+    | 'volume_desc'
+    | 'volume_asc'
+    | 'id_desc'
+    | 'id_asc';
   per_page: number;
   page: number;
   sparkline?: boolean;

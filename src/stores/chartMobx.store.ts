@@ -41,7 +41,8 @@ class ChartMobxStore {
       });
     } catch (err) {
       runInAction(() => {
-        this.error = err instanceof Error ? err.message : 'Failed to fetch chart data';
+        this.error =
+          err instanceof Error ? err.message : 'Failed to fetch chart data';
         this.loading = false;
       });
     }

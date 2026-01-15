@@ -5,7 +5,6 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { useChartStore } from '../stores/chart.store';
-import ImageList from '@material-ui/core/ImageList';
 
 am4core.useTheme(am4themes_animated);
 
@@ -73,25 +72,25 @@ export const ChartView: React.FC = () => {
   }, [transformedData]);
 
   return (
-      <Paper className={classes.paper}>
-        <Typography variant="h5" className={classes.title}>
-          Bitcoin Price (Last 7 Days)
-        </Typography>
-        {loading && (
-            <Box className={classes.loading}>
-              <CircularProgress/>
-            </Box>
-        )}
-        {error && (
-            <Box className={classes.loading}>
-              <Typography color="error">{error}</Typography>
-            </Box>
-        )}
-        <div
-            ref={chartDivRef}
-            className={classes.chartContainer}
-            style={{display: loading || error ? 'none' : 'block'}}
-        ></div>
-      </Paper>
+    <Paper className={classes.paper}>
+      <Typography variant="h5" className={classes.title}>
+        Bitcoin Price (Last 7 Days)
+      </Typography>
+      {loading && (
+        <Box className={classes.loading}>
+          <CircularProgress />
+        </Box>
+      )}
+      {error && (
+        <Box className={classes.loading}>
+          <Typography color="error">{error}</Typography>
+        </Box>
+      )}
+      <div
+        ref={chartDivRef}
+        className={classes.chartContainer}
+        style={{ display: loading || error ? 'none' : 'block' }}
+      ></div>
+    </Paper>
   );
 };

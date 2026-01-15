@@ -22,9 +22,9 @@ export const useChartStore = create<ChartState>((set, get) => ({
   error: null,
 
   fetchChartData: async (coinId: string, days: number) => {
-    const {chartData} = get();
+    const { chartData } = get();
 
-    if(!!chartData) {
+    if (chartData) {
       return;
     }
     set({ loading: true, error: null });
@@ -40,10 +40,15 @@ export const useChartStore = create<ChartState>((set, get) => ({
         value: price,
       }));
 
-      set({ chartData: data, transformedPriceData: transformed, loading: false });
+      set({
+        chartData: data,
+        transformedPriceData: transformed,
+        loading: false,
+      });
     } catch (err) {
       set({
-        error: err instanceof Error ? err.message : 'Failed to fetch chart data',
+        error:
+          err instanceof Error ? err.message : 'Failed to fetch chart data',
         loading: false,
       });
     }
