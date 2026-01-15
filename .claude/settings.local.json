@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:api.coingecko.com)",
-      "Bash(npm run check-typing:*)"
+      "Bash(npm run check-typing:*)",
+      "Bash(gh:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(git pull:*)",
+      "Bash(git branch:*)",
+      "Bash(git reset:*)"
     ]
   }
 }
